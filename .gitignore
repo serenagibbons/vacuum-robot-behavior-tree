@@ -1,0 +1,6 @@
+bt/__pycache__/
+bt/composites/__pycache__
+bt/conditions/__pycache__
+bt/decorators/__pycache__
+bt/tasks/__pycache__
+bt_library/__pycache__

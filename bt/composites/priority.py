@@ -1,16 +1,8 @@
-#
-# Behavior Tree framework for A1 Behavior trees assignment.
-# CS 131 - Artificial Intelligence
-#
-# Version 2.0.1 - copyright (c) 2023-2024 Santini Fabrizio. All rights reserved.
-#
-
 import bt_library as btl
 
-
-class Selection(btl.Composite):
+class Priority(btl.Composite):
     """
-    Specific implementation of the selection composite.
+    Specific implementation of the priority composite.
     """
 
     def __init__(self, children: btl.NodeListType):
@@ -23,19 +15,18 @@ class Selection(btl.Composite):
 
     def run(self, blackboard: btl.Blackboard) -> btl.ResultEnum:
         """
-        Execute the behavior of the node:
-        Children are evaluated from left to right, starting from the
-        previous RUNNING child. It returns SUCCEEDED as soon as one of
-        the children returns SUCCEEDED. It returns FAILED if all the children
-        have returned FAILED. It will return RUNNING immediately if a child
-        returns RUNNING
+        Execute the behavior of the node: 
+        Children are evaluated in order of priority, ignoring any
+        RUNNING child. It returns SUCCEEDED as soon as one of the children
+        returns SUCCEEDED. It returns FAILED if all the children have
+        returned FAILED. It will return RUNNING immediately if a child
+        returns RUNNING.
 
         :param blackboard: Blackboard with the current state of the problem
         :return: The result of the execution
         """
-        running_child = self.additional_information(blackboard, 0)
 
-        for child_position in range(running_child, len(self.children)):
+        for child_position in range(len(self.children)):
             child = self.children[child_position]
 
             result_child = child.run(blackboard)
