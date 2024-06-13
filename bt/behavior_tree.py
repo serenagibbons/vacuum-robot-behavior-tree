@@ -5,27 +5,45 @@
 # version 2.0.1 - copyright (c) 2023-2024 Santini Fabrizio. All rights reserved.
 #
 
+import bt.decorators
 import bt_library as btl
-
 import bt as bt
 
-# Instantiate the tree according to the assignment. The following are just examples.
+# Instantiate the behavior tree according to the assignment
 
-# Example 1:
-# tree_root = btl.Timer(5, tasks.FindHome())
-
-# Example 2:
-# tree_root = composites.Selection(
-#     [
-#         BatteryLessThan30(),
-#         FindHome()
-#     ]
-# )
-
-# Example 3:
-tree_root = bt.Selection(
-    [
+tree_root = bt.composites.Priority([
+    # battery sequence subtree
+    bt.composites.Sequence([
         bt.BatteryLessThan30(),
-        btl.Timer(10, bt.FindHome())
-    ]
-)
+        bt.FindHome(),
+        bt.GoHome(),
+        bt.Dock()
+    ]),
+    bt.composites.Selection([
+        # spot cleaning sequence subtree
+        bt.Sequence([
+            bt.SpotCleaning(),
+            btl.Timer(20, bt.CleanSpot()),
+            bt.DoneSpot()
+        ]),
+        # general cleaning sequence subtree
+        bt.Sequence([
+            bt.GeneralCleaning(),
+            bt.Sequence([
+                bt.Priority([
+                    # dusty spot sequence subtree
+                    bt.Sequence([
+                        bt.DustySpot(),
+                        btl.Timer(35, bt.CleanSpot()),
+                        bt.AlwaysFail()
+                    ]),
+                    # clean floor 
+                    bt.decorators.UntilFails(bt.CleanFloor())
+                ]),
+                bt.DoneGeneral()
+            ])
+        ])
+    ]),
+    # do nothing node
+    bt.DoNothing()
+])
