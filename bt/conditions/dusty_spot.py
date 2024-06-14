@@ -4,7 +4,6 @@ from ..globals import DUSTY_SPOT_SENSOR
 class DustySpot(btl.Condition):
     """
     Implementation of the condition dusty_spot_sensor 
-
     """
     def run(self, blackboard: btl.Blackboard) -> btl.ResultEnum:
         self.print_message("Checking if dusty spot was detected")

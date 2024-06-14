@@ -8,6 +8,7 @@ class DoneGeneral(btl.Task):
     def run(self, blackboard: btl.Blackboard) -> btl.ResultEnum:
         self.print_message("General cleaning done")
 
+        # update the blackboard general_cleaning value to false
         blackboard.set_in_environment(GENERAL_CLEANING, False)
 
         return self.report_succeeded(blackboard)

@@ -8,8 +8,11 @@ class GoHome(btl.Task):
     def run(self, blackboard: btl.Blackboard) -> btl.ResultEnum:
         self.print_message("Returning home")
 
-        home = blackboard.get_in_environment(HOME_PATH, "No home found")
-        if home == "No home found":
+        # get the blackboard home_path value
+        home = blackboard.get_in_environment(HOME_PATH, "")
+        # if no home_path found, return failed
+        if home == "":
             return self.report_failed(blackboard)
 
+        # otherwise return succeeded
         return self.report_succeeded(blackboard)

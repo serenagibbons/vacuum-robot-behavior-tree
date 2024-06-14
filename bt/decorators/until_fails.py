@@ -1,7 +1,6 @@
 import bt_library as btl
 
 class UntilFails(btl.Decorator):
-    
     """
     Implementation of the Decorator "Until Fails".
     Returns RUNNING when the child returns SUCCEEDED or RUNNING. 
